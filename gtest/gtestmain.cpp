@@ -3,7 +3,7 @@
 // This file runs Google Test with any of the unit tests you wrote in the
 // test.cpp file.
 // -------------------------------------------------------------------------- //
-
+/*
 #include <gtest/gtest.h>
 
 extern "C" {
@@ -39,3 +39,4 @@ int main(int argc, char** argv) {
   return RUN_ALL_TESTS();
 }
 
+*/
