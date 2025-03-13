@@ -1,14 +1,23 @@
+#include "dijkstras.h"
+
+struct EdgeComparer{
+	bool operator()(const Edge& lhs, const Edge &rhs){
+		return lhs.weight > rhs.weight;
+	}
+};
+
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous){
 	int numv = G.numVertices;
 	vector<int> distance(numv, INF);
 	vector<bool> visited(numv, false);
 	previous.resize(numv, -1);
 
-	priority_queue<pair<int, int>, vector<pair<int, int>, greater<pair<int, int>>> pq; 
-	pq.push({source, 0});
-	graph.distance[source] = 0;
+	priority_queue<Edge, vector<Edge>, EdgeComparer> pq; 
+	pq.push(Edge(source, 0));
+	distance[source] = 0;
 	while(!pq.empty()){
-		int u = pq.pop().first; 
+		int u = pq.top().src; 
+		pq.pop();
 		if(visited[u])
 			continue;
 		visited[u] = true;
@@ -19,7 +28,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
 			if(!visited[v] && distance[u] + weight < distance[v]){
 				distance[v] = distance[u] + weight;
 				previous[v] = u;
-				pq.push({v, distance[v]});
+				pq.push(e);
 			}
 				
 		}
@@ -40,8 +49,8 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
 }
 void print_path(const vector<int>& v, int total){
 	for(auto s : v){
-		cout << v << ' ';
-		total -= v;
+		cout << s << ' ';
+		total -= s;
 		if(total > 0)
 			break;
 	}
