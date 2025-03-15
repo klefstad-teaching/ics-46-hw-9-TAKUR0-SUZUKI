@@ -15,8 +15,7 @@ bool is_adjacent(const string& word1, const string& word2){
 		return false;
 	int diff = 0;
 	if(size1 == size2){
-		int iters = min(size1, size2);
-		for(int i = 0; i < iters; ++i){
+		for(int i = 0; i < size1; ++i){
 			if(word1[i] != word2[i])
 				++diff;
 			if(diff == 2)
@@ -25,20 +24,12 @@ bool is_adjacent(const string& word1, const string& word2){
 		return true;
 	}
 	else{
-		int iters = max(size1, size2);
-		string smaller, bigger;
-		if(size1 < size2){
-			smaller = word1;
-			bigger = word2;
-		}
-		else{
-			smaller = word2;
-			bigger = word1;
-		}
+		if(size1 > size2)
+			return is_adjacent(word2, word1);  
 			
-		for(int i = 0, j = 0; i < iters; ++i, ++j){
-			if(smaller[i] != bigger[j])
-				return smaller.substr(i) == bigger.substr(j+1);
+		for(int i = 0, j = 0; i < size1; ++i, ++j){
+			if(word1[i] != word2[j])
+				return word1.substr(i) == word2.substr(j+1);
 		}
 		return true;
 	}
@@ -47,7 +38,7 @@ bool is_adjacent(const string& word1, const string& word2){
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
 	if(begin_word == end_word)
-		return {begin_word};
+		return {};
 	queue<vector<string>> ladder_queue;
 	ladder_queue.push(vector<string>{begin_word});
 	unordered_set<string> visited; 
@@ -61,7 +52,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 		last_word = ladder[ladder.size() - 1];
 		for(auto word : word_list){
 			if(is_adjacent(last_word, word)){
-				if(visited.count(word) == 0){
+				if(!visited.count(word)){
 					visited.insert(word);
 					new_ladder = vector<string>(ladder.begin(), ladder.end());
 					new_ladder.push_back(word);
@@ -117,5 +108,7 @@ void verify_word_ladder() {
     my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
 
     my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
+
+	my_assert(generate_word_ladder("car", "car", word_list).size() == 0);
 
 }
