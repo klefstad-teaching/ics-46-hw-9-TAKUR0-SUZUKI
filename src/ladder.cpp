@@ -53,14 +53,14 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 		for(auto word : word_list){
 			if(is_adjacent(last_word, word)){
 				if(!visited.count(word)){
-					visited.insert(word);
 					new_ladder = vector<string>(ladder.begin(), ladder.end());
 					new_ladder.push_back(word);
 					if(word == end_word)
 						return new_ladder;
+					visited.insert(word);
 					ladder_queue.push(new_ladder);
+				}
 			}
-		}
 		}
 		
 	}
