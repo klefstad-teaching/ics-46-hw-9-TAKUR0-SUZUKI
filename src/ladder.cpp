@@ -26,32 +26,21 @@ bool is_adjacent(const string& word1, const string& word2){
 	}
 	else{
 		int iters = max(size1, size2);
-		string smaller_base, bigger;
+		string smaller, bigger;
 		if(size1 < size2){
-			smaller_base = word1;
+			smaller = word1;
 			bigger = word2;
 		}
 		else{
-			smaller_base = word2;
+			smaller = word2;
 			bigger = word1;
 		}
 			
-		for(int i = 0; i < iters; ++i){
-			diff = false;
-			string smaller = smaller_base;
-			smaller.insert(i, 1, bigger[i]);
-			for(int j = 0; j < iters; ++j){
-				if(smaller[j] != bigger[j]){
-					diff = true;
-					break;
-				}
-			}
-			if(!diff){
-				return true;
-			}
-				
+		for(int i = 0, j = 0; i < iters; ++i, ++j){
+			if(smaller[i] != bigger[j])
+				return smaller.substr(i) == bigger.substr(j+1);
 		}
-		return false;
+		return true;
 	}
 
 }
@@ -93,8 +82,11 @@ void load_words(set<string> & word_list, const string& file_name){
 	}
 }
 void print_word_ladder(const vector<string>& ladder){
-	if(ladder.size() == 0)
-		cout << "No word ladder found." << endl;
+	if(ladder.size() == 0){
+		cout << "No word ladder found.";
+		return;
+	}
+	cout << "Word ladder found: ";
 	for(auto s : ladder)
 		cout << s << ' ';
 	cout << endl;

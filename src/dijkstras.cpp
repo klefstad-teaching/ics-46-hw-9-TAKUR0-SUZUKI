@@ -20,10 +20,11 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
 		for(auto e : G[u]){
 			int v = e.dst;
 			int weight = e.weight;
-			if(!visited[v] && distance[u] + weight < distance[v]){
+			if(distance[u] + weight < distance[v]){
 				distance[v] = distance[u] + weight;
 				previous[v] = u;
-				pq.push({v, distance[v]});
+				if(!visited[v])
+					pq.push({v, distance[v]});
 			}
 				
 		}
@@ -41,11 +42,12 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
 		out.push_back(prev);
 		prev = previous[prev];
 	}
+	reverse(out.begin(), out.end());
 	return out;
 }
 void print_path(const vector<int>& v, int total){
 	for(auto s : v){
 		cout << s << ' ';
 	}
-	cout << endl << "Total cost = " << total << endl;
+	cout << "\nTotal cost is " << total << "\n";
 }
